@@ -1,3 +1,11 @@
+# my
+venv/
+venv
+redis_data/*
+
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -5,8 +13,7 @@ __pycache__/
 
 # C extensions
 *.so
-venv/
-venv
+
 # Distribution / packaging
 .Python
 build/

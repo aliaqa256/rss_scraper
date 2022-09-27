@@ -1,17 +1,17 @@
-FROM python:3.10
+FROM python:3.9
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /rss-scraper
+WORKDIR /backend
 
-COPY requirements.txt /ninjafits-back/
+COPY requirements.txt /backend/
 
 RUN pip install pip
 RUN pip install -r requirements.txt
 
-COPY . /ninjafits-back/
+COPY . /backend/
 
 EXPOSE 8000
-RUN python manage.py collectstatic --no-input
+# RUN python manage.py collectstatic --no-input
 
 CMD ["gunicorn", "config.wsgi", ":8000"]
 
