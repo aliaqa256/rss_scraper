@@ -223,8 +223,8 @@ CELERY_RESULT_SERIALIZER = 'pickle'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ninjafits.verify@gmail.com'
-EMAIL_HOST_PASSWORD = '97242026z'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD =''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Ninjafits app <ninjafits.verify@gmail.com>'
@@ -266,3 +266,5 @@ CACHES = {
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+ADMIN_EMAIL = env('ADMIN_EMAIL')
