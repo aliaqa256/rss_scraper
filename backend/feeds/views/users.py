@@ -11,9 +11,10 @@ from feeds.models import Feed,Item
 from accounts.models import User
 
 
+
 class FollowFeed(APIView):
     """get feed_id and user(by header bearer) then add user to feed followers"""
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated,]
     def post(self, request):
         try:
             feed_id= request.data['feed_id']
@@ -32,7 +33,7 @@ class FollowFeed(APIView):
 
 class UnFollowFeed(APIView):
     """get feed_id and user(by header bearer) then remove user from feed followers"""
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated,]
     def post(self, request):
         try:
             feed_id= request.data['feed_id']

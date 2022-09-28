@@ -1,4 +1,5 @@
 from asyncore import read
+from calendar import c
 from this import d
 from django.db import models
 
@@ -28,5 +29,8 @@ class Item(models.Model):
     
     def is_read(self, user):
         return user in self.read.all()
+
+    class Meta:
+        ordering = ['-pub_date']
     
     
