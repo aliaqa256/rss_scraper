@@ -32,8 +32,8 @@ services:
       - ./backend/static/:/backend/static/
       - ./backend/media/:/backend/media/
     env_file: backend/config/.env
-    # depends_on:
-    #   - redis
+    depends_on:
+      - redis
     ports:
       - "8000:8000"
     restart: always
@@ -41,50 +41,52 @@ services:
       - main
 
 
-  # redis:
-  #   container_name: redis
-  #   image: "redis:6.2"
-  #   command: redis-server
-  #   ports:
-  #     - "6379:6379"
-  #   restart: always
-  #   volumes:
-  #     - ./redis_data:/data
-  #   networks:
-  #     - main
+  redis:
+    container_name: redis
+    image: "redis:6.2"
+    command: redis-server
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - ./redis_data:/data
+    networks:
+      - main
 
 
-  # celery:
-  #   container_name: celery
-  #   build: ./backend
-  #   command: "celery -A config worker -l INFO"
-  #   volumes:
-  #     - ./backend:/backend
-  #   environment:
-  #     - C_FORCE_ROOT=true
-  #   depends_on:
-  #     - backend
-  #     - redis
-  #   networks:
-  #     - main
-  #   restart: always
+  celery:
+    container_name: celery
+    build: ./backend
+    command: "celery -A config worker -l INFO"
+    volumes:
+      - ./backend:/backend
+    env_file: backend/config/.env
+    environment:
+      - C_FORCE_ROOT=true
+    depends_on:
+      - backend
+      - redis
+    networks:
+      - main
+    restart: always
 
 
 
 
-  # celery_beats:
-  #   container_name: celery_beats
-  #   build: ./backend
-  #   command: "celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
-  #   volumes:
-  #     - ./backend:/backend
-  #   depends_on:
-  #     - backend
-  #     - celery
-  #     - redis
-  #   networks:
-  #     - main
-  #   restart: always
+  celery_beats:
+    container_name: celery_beats
+    build: ./backend
+    command: "celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+    volumes:
+      - ./backend:/backend
+    env_file: backend/config/.env
+    depends_on:
+      - backend
+      - celery
+      - redis
+    networks:
+      - main
+    restart: always
 
 
 networks:

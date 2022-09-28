@@ -15,7 +15,7 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 PERFORMANCE_MODE_SILK = env('PERFORMANCE_MODE_SILK') == 'True'
 PERFORMANCE_MODE_DEBUG_TOOLBAR = env(
     'PERFORMANCE_MODE_DEBUG_TOOLBAR') == 'True'
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     # my apps
     'accounts',
+    'feeds',
 ]
 
 
@@ -215,9 +216,9 @@ AUTH_USER_MODEL = 'accounts.User'
 
 CELERY_BROKER_URL = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'redis://redis:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'application/json'
-CELERY_RESULT_SERIALIZER = 'application/json'
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_RESULT_SERIALIZER = 'pickle'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
