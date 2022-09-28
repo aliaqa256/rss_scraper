@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'django_celery_beat',
+    'rest_framework_swagger',
+    'drf_yasg',
+    'drf_generators',
     # my apps
     'accounts',
     'feeds',
@@ -75,7 +78,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,6 +92,10 @@ TEMPLATES = [
 ]
 
 REST_FRAMEWORK = {
+
+    'DEFAULT_PAGINATION_CLASS': (
+    'rest_framework.pagination.PageNumberPagination',
+    ),
 
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
@@ -115,8 +122,7 @@ REST_FRAMEWORK = {
         'login-day': '30/day',
     }
 
-
-
+   
 
 }
 
