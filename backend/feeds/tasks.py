@@ -9,6 +9,7 @@ from .models import Feed
 def rss_scraper():
     feeds=Feed.objects.all()
     for feed in feeds:
+        #TODO another task
         feed_items=scraper(feed.url)
         if not feed_items:
             return 'error'

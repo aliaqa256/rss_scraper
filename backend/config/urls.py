@@ -6,11 +6,12 @@ from django.urls import path
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+
     path('auth/', include('accounts.urls')),
-    path('feed/', include('feeds.urls')),
+    path('feeds/', include('feeds.urls')),
 ]
-urlpatterns = [path('api/', include(urlpatterns)),]
+urlpatterns = [path('api/', include(urlpatterns)),
+    path('admin/', admin.site.urls),]
 
 
 if settings.PERFORMANCE_MODE_SILK:
