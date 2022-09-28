@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import FeedSerializer,ItemSerializer
-from .models import Feed,Item
+from feeds.serializers import FeedSerializer,ItemSerializer
+from feeds.models import Feed,Item
 
 
 class FeedsList(ListAPIView):
