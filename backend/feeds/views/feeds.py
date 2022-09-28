@@ -10,13 +10,13 @@ from feeds.models import Feed,Item
 
 
 class FeedsList(ListAPIView):
-    queryset = Feed.objects.all()
+    queryset = Feed.objects.prefetch_related('followers').all()
     serializer_class = FeedSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
 class ItemsList(ListAPIView):
-    queryset = Item.objects.all()
+    queryset = Item.objects.prefetch_related('read').select_related('feed').all()
     serializer_class = ItemSerializer
     permission_classes = [permissions.IsAuthenticated]
 

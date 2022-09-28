@@ -5,6 +5,8 @@ from .models import Feed,Item
 from accounts.serializers import UserSerializer
 
 class FeedSerializer(serializers.ModelSerializer):
+    followers = UserSerializer(many=True, read_only=True)
+    
     class Meta:
         model = Feed
         fields = ['id', 'title', 'url', 'followers', 'created_at']
