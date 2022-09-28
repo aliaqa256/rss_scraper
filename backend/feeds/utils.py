@@ -8,7 +8,7 @@ def scraper(url):
     r = requests.get(url)
     if not r.status_code == 200:
         send_email_to_admin()
-        return None
+        return False
     soup = BeautifulSoup(r.content, features='xml')
     items_list = []
     items = soup.findAll('item')

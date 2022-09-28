@@ -13,7 +13,7 @@ from .models import User
 
 class LoginView(TokenObtainPairView):
     permission_classes = [permissions.AllowAny]
-    # throttle_classes = [LoginPerDayThrottle]
+    throttle_classes = [LoginPerDayThrottle]
     queryset = User.objects.all()
 
 class RegistrationView(CreateAPIView):
