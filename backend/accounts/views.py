@@ -1,12 +1,10 @@
-from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView, DestroyAPIView, UpdateAPIView,ListAPIView,RetrieveAPIView
+from rest_framework.generics import CreateAPIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import permissions
 from .throttles import LoginPerDayThrottle
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import UserRegisterSerializer
-from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User
 
 

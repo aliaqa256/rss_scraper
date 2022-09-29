@@ -1,15 +1,14 @@
-from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView, DestroyAPIView, UpdateAPIView,ListAPIView,RetrieveAPIView
+from rest_framework.generics import ListAPIView,RetrieveAPIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import permissions
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.tokens import RefreshToken
 from feeds.serializers import FeedSerializer,ItemSerializer
 from feeds.models import Feed,Item
 from accounts.models import User
 from django.shortcuts import get_object_or_404
 from feeds import exceptions
+import logging
+logger = logging.getLogger(__name__)
 
 
 class FeedsList(ListAPIView):
@@ -57,5 +56,6 @@ class ItemDetailView(RetrieveAPIView):
         except Item.DoesNotExist:
             raise exceptions.NotFound("item not found")
         except Exception as e:
+            logger.error(e)            
             raise exceptions.InternalServerError()
 
