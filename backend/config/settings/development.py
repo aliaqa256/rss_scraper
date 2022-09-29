@@ -93,6 +93,7 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
 
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ),
@@ -121,6 +122,8 @@ REST_FRAMEWORK = {
    
 
 }
+
+
 
 jwt_path=os.path.join(BASE_DIR,  'jwt')
 jwt_pub_path = os.path.join(BASE_DIR, 'jwt.pub')

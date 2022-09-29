@@ -7,6 +7,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from feeds.serializers import FeedSerializer,ItemSerializer
 from feeds.models import Feed,Item
+from accounts.models import User
+from django.shortcuts import get_object_or_404
+from feeds import exceptions
 
 
 class FeedsList(ListAPIView):
@@ -16,21 +19,26 @@ class FeedsList(ListAPIView):
 
 
 class ItemsList(ListAPIView):
-    queryset = Item.objects.prefetch_related('read').select_related('feed').all()
+    queryset = Item.objects.prefetch_related('read_by').select_related('feed').all()
     serializer_class = ItemSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
-class GetMyItems(ListAPIView):
+class GetMyFeeds(ListAPIView):
     serializer_class = ItemSerializer
     permission_classes = [permissions.IsAuthenticated]
-
     def get_queryset(self):
-        user = self.request.user
-        return Item.objects.filter(feed__followers=user).select_related('feed').all()
-#retrieve the feed by pk 
+        return Item.objects.prefetch_related('read_by').select_related('feed').all()
+    def get(self, request, pk):
+        user=get_object_or_404(User, pk=pk)
+        if pk is not request.user.id:
+            raise exceptions.AccessDenied("this content is not yours")
+        items = self.get_queryset().filter(feed__followers=pk)
+        serializer = ItemSerializer(items, many=True)
+        return Response(serializer.data)
+
 class ItemDetailView(RetrieveAPIView):
-    queryset = Item.objects.prefetch_related('read').select_related('feed').all()
+    queryset = Item.objects.prefetch_related('read_by').select_related('feed').all()
     serializer_class = ItemSerializer
     permission_classes = [permissions.IsAuthenticated,]
     lookup_field = 'pk'
@@ -43,12 +51,11 @@ class ItemDetailView(RetrieveAPIView):
                 return Response({'message':"you are not following this feed !" },status=status.HTTP_400_BAD_REQUEST)
             item = self.get_object()
             user = request.user
-            if not Item.objects.filter(pk=item.pk,read=user).exists():
-                item.read.add(user)
+            if not Item.objects.filter(pk=item.pk,read_by=user).exists():
+                item.read_by.add(user)
             return super().get(request, *args, **kwargs)
         except Item.DoesNotExist:
-            return Response({'message':"item not found !" },status=status.HTTP_404_NOT_FOUND)
+            raise exceptions.NotFound("item not found")
         except Exception as e:
-            msg = f"Error: {e}"
-            return Response(msg, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise exceptions.InternalServerError()
 

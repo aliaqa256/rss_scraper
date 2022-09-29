@@ -57,7 +57,7 @@ services:
   celery:
     container_name: celery
     build: ./backend
-    command: "celery -A config worker -l INFO"
+    command: "celery -A config worker -l INFO -c2"
     volumes:
       - ./backend:/backend
     env_file: backend/config/.env

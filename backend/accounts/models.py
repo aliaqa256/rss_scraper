@@ -1,13 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.db import models
-import re
-from django.core.exceptions import ValidationError
+from .validations import username_validator
 
-
-def username_validator(value):
-    reg = re.compile('^[\w._]+$')
-    if not reg.match(value) or len(value)<4:
-        raise ValidationError(u'%s please enter a valid username' % value)
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **kwargs):

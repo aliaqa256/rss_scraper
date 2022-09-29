@@ -1,6 +1,3 @@
-from asyncore import read
-from calendar import c
-from this import d
 from django.db import models
 
 
@@ -20,7 +17,7 @@ class Item(models.Model):
     link = models.URLField(max_length=255)
     description = models.TextField()
     pub_date = models.DateTimeField()
-    read = models.ManyToManyField('accounts.User', related_name='items',
+    read_by = models.ManyToManyField('accounts.User', related_name='items',
     blank=True)
     feed = models.ForeignKey(Feed, related_name='items', on_delete=models.CASCADE)
 
@@ -28,7 +25,7 @@ class Item(models.Model):
         return self.title
     
     def is_read(self, user):
-        return user in self.read.all()
+        return user in self.read_by.all()
 
     class Meta:
         ordering = ['-pub_date']
